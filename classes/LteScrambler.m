@@ -4,7 +4,7 @@ classdef LteScrambler < matlab.System
     
     properties
         hSeqGen;
-        hInt2Bit;
+        %hInt2Bit;
         initialStates1;
         initialStates2;
     end
@@ -22,15 +22,15 @@ classdef LteScrambler < matlab.System
                     'Shift', 1600,...
                     'VariableSizeOutput', true,...
                     'MaximumOutputSize', [maxG 1]);
-                this.hInt2Bit = comm.IntegerToBit('BitsPerInteger', 31);
+                %this.hInt2Bit = comm.IntegerToBit('BitsPerInteger', 31);
 
                 % Initial conditions to create Gold sequence
                 slotNo = [frameNo*2, frameNo*2+1];
                 c_init = rnti*(2^14) + codeword*(2^13) + floor(slotNo/2)*(2^9) + cellId; % For first slot
 
                 % Convert initial condition to binary vector
-                this.initialStates1 = step(this.hInt2Bit, c_init(1));
-                this.initialStates2 = step(this.hInt2Bit, c_init(2));
+                this.initialStates1 = de2bi(c_init(1),31); %step(this.hInt2Bit, c_init(1));
+                this.initialStates2 = de2bi(c_init(2),31); %step(this.hInt2Bit, c_init(2));
             end
         end
         
